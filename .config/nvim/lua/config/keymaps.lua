@@ -21,10 +21,7 @@ vim.keymap.set('n', '<2-LeftMouse>', highlight_word_under_cursor, { desc = 'High
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- <C-h/j/k/l> window moves come from vim-tmux-navigator (lua/plugins/tmux-navigator.lua).
 vim.keymap.set('n', '<C-y>', '<cmd>let @+ = expand("%:p")<CR>', { desc = 'Copy file path to clipboard' })
 
 vim.keymap.set('n', '<A-j>', '<cmd>m .+1<CR>==', { desc = 'Move line down' })

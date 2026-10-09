@@ -13,6 +13,7 @@ The repo mirrors `$HOME`, so on Mac/Linux the path *is* the configuration:
 .config/git/config              shared
 .config/oh-my-posh/             shared prompt theme (zsh + PowerShell)
 .config/ghostty/config.ghostty  terminal (macOS / Linux): gruvbox light + dark
+.config/tmux/tmux.conf          tmux (no plugins); status bar uses terminal colours
 .zshenv                         zsh: XDG paths, ZDOTDIR=~/.config/zsh
 .config/zsh/.zshrc              zsh (Mac / Linux / WSL)
 .config/nvim/                   shared Neovim config (including lazy-lock.json)
@@ -28,7 +29,7 @@ install.ps1           symlinks via PowerShell (Windows)
 ```
 
 Machine-specific zsh settings go in `~/.config/zsh/.zshrc.local` (untracked).
-zsh history lives in `~/.local/state/zsh/history`. tmux config is still to be imported.
+zsh history lives in `~/.local/state/zsh/history`.
 
 ## Install
 
@@ -97,8 +98,6 @@ and restart Pi. It is not applied automatically or required on Mac/Linux.
   can't drift. Delete the folder once Windows is gone.
 - **One oh-my-posh theme for every shell.** `gruvbox-lean` drives both the
   PowerShell and zsh prompts; `OMP_MODE` picks the light or dark palette.
-- **zsh without a framework.** No oh-my-zsh: autosuggestions, syntax
-  highlighting, zoxide and fzf come from the package manager (`bootstrap.sh`).
 - **Machine-specific git settings stay out of the repo.** Windows'
   `core.sshCommand` lives in `~/.gitconfig`, which git reads after
   `~/.config/git/config`.
@@ -122,10 +121,12 @@ and restart Pi. It is not applied automatically or required on Mac/Linux.
 - Ghostty also reads `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`
   *after* the XDG file; keep that file absent so settings stay in the repo.
 
-## Still outstanding
-- Import tmux config from the Mac.
+## TODO
+
+- Decide if Yabai and SKHD should be added
+- Windows Terminal Settings Added
+- Look into migrating to Mise for Node and potentially rest of bootstrap.
 
 ## Not tested
-- bootstrap.ps1
-- bootstrap.sh
-- install.sh
+
+- Linux Install

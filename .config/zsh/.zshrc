@@ -121,15 +121,9 @@ alias g='lazygit' lg='lazygit'
 alias gst='git status'
 alias oc='opencode'
 
-# nnn: `n` changes to nnn's directory on quit.
-if (( $+commands[nnn] )); then
-  export NNN_TRASH=1
-  n() {
-    [[ ${NNNLVL:-0} -eq 0 ]] || { echo "nnn is already running"; return }
-    export NNN_TMPFILE="$XDG_CONFIG_HOME/nnn/.lastd"
-    command nnn "$@"
-    [[ -f $NNN_TMPFILE ]] && { . "$NNN_TMPFILE"; rm -f "$NNN_TMPFILE" }
-  }
+# zoxide
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init --cmd cd zsh)"
 fi
 
 # --- Tools -------------------------------------------------------------------
@@ -151,6 +145,21 @@ if (( $+commands[fzf] )); then
 fi
 
 (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"   # z <dir>, zi for a picker
+
+# --- Long-command bell (tmux) ------------------------------------------------
+# When a command runs for ZSH_BELL_AFTER seconds or more, ring the bell as it
+# finishes. tmux shows that as a green ✔ on the window's tab until you visit it
+# (and keeps it silent). Override the threshold in .zshrc.local.
+: ${ZSH_BELL_AFTER:=10}
+zmodload zsh/datetime
+_bell_start() { _bell_t0=$EPOCHSECONDS }
+_bell_check() {
+  [[ -n $TMUX && -n $_bell_t0 ]] || return
+  (( EPOCHSECONDS - _bell_t0 >= ZSH_BELL_AFTER )) && print -n '\a'
+  unset _bell_t0
+}
+add-zsh-hook preexec _bell_start
+add-zsh-hook precmd _bell_check
 
 # --- Prompt & colour mode ----------------------------------------------------
 

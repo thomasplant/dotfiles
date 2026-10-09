@@ -14,6 +14,9 @@
 !/agent/extensions/pi-workflows-shortcut/
 /agent/extensions/pi-workflows-shortcut/*
 !/agent/extensions/pi-workflows-shortcut/index.ts
+!/agent/extensions/pi-tmux-bell/
+/agent/extensions/pi-tmux-bell/*
+!/agent/extensions/pi-tmux-bell/index.ts
 !/agent/extensions/pi-permission-system/
 /agent/extensions/pi-permission-system/*
 !/agent/extensions/pi-permission-system/config.json

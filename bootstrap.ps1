@@ -134,10 +134,19 @@ foreach ($module in @('CompletionPredictor', 'posh-git', 'PSFzf')) {
 if ($PSCmdlet.ShouldProcess($config, 'Run npm ci (includes Tree-sitter CLI installation scripts)')) {
     Invoke-CheckedCommand 'npm' @('ci', '--prefix', $config)
 }
-if (Get-Executable 'markdownlint') { Write-Host 'ok        markdownlint' }
-elseif ($PSCmdlet.ShouldProcess('markdownlint-cli', 'Install global npm package for Markdown linting')) {
-    Invoke-CheckedCommand 'npm' @('install', '--global', 'markdownlint-cli')
+if (Get-Executable 'markdownlint-cli2') { Write-Host 'ok        markdownlint-cli2' }
+elseif ($PSCmdlet.ShouldProcess('markdownlint-cli2', 'Install global npm package for Markdown linting')) {
+    Invoke-CheckedCommand 'npm' @('install', '--global', 'markdownlint-cli2')
     Update-ProcessPath
+}
+
+$hackFont = 'HackNerdFontMono-Regular.ttf'
+$fontInstalled = (Test-Path (Join-Path $env:LOCALAPPDATA "Microsoft\Windows\Fonts\$hackFont")) -or
+                 (Test-Path (Join-Path $env:WINDIR "Fonts\$hackFont"))
+if ($fontInstalled) { Write-Host 'ok        Hack Nerd Font' }
+elseif ($PSCmdlet.ShouldProcess('Hack Nerd Font', 'Install for current user using oh-my-posh')) {
+    Invoke-CheckedCommand 'oh-my-posh' @('font', 'install', 'Hack', '--plain')
+    Write-Host 'Set Windows Terminal''s font to "Hack Nerd Font Mono" if it is not already.'
 }
 
 if (Get-Executable 'pi') { Write-Host 'ok        pi' }

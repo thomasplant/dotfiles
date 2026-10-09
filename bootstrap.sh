@@ -16,14 +16,8 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     exit 1
   fi
   brew install git stow neovim ripgrep fzf lazygit git-delta fd bat tmux \
-    oh-my-posh zoxide zsh-autosuggestions zsh-syntax-highlighting
+    oh-my-posh zoxide zsh-autosuggestions zsh-syntax-highlighting markdownlint-cli2
   brew install --cask ghostty
-  shopt -s nullglob nocaseglob
-  hack_fonts=("$HOME"/Library/Fonts/*hack*nerd* /Library/Fonts/*hack*nerd*)
-  shopt -u nullglob nocaseglob
-  if (( ${#hack_fonts[@]} == 0 )); then
-    brew install --cask font-hack-nerd-font
-  fi
 
 elif command -v pacman >/dev/null 2>&1; then
   sudo pacman -S --needed --noconfirm \
@@ -62,6 +56,19 @@ else
   exit 1
 fi
 
+# nvim lints Markdown with markdownlint-cli2 (lua/plugins/lint.lua). Linux repos don't
+# package it, so use npm when available (macOS: brew above).
+if [[ "$(uname -s)" == "Linux" ]] && ! command -v markdownlint-cli2 >/dev/null 2>&1; then
+  echo
+  if command -v npm >/dev/null 2>&1; then
+    echo "Installing markdownlint-cli2 with npm"
+    npm install --global markdownlint-cli2 \
+      || echo "NOTE: npm install failed; try: sudo npm install --global markdownlint-cli2"
+  else
+    echo "NOTE: install Node.js, then: npm install --global markdownlint-cli2"
+  fi
+fi
+
 # oh-my-posh isn't in the Linux distro repos; use its official installer (macOS: brew above).
 if [[ "$(uname -s)" == "Linux" ]] && ! command -v oh-my-posh >/dev/null 2>&1; then
   echo
@@ -73,6 +80,24 @@ if [[ "$(uname -s)" == "Linux" ]] && ! command -v oh-my-posh >/dev/null 2>&1; th
     curl -fsSL https://ohmyposh.dev/install.sh -o "$installer"
     bash "$installer" -d "$HOME/.local/bin"
   )
+fi
+
+if [[ -n "${WSL_DISTRO_NAME:-}" ]] || grep -qi microsoft /proc/version 2>/dev/null; then
+  echo
+  echo "WSL: install Hack Nerd Font on Windows (bootstrap.ps1), not here."
+else
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    have_font() { [[ -e "$HOME/Library/Fonts/HackNerdFontMono-Regular.ttf" || -e /Library/Fonts/HackNerdFontMono-Regular.ttf ]]; }
+  else
+    have_font() { fc-list 2>/dev/null | grep -q 'HackNerdFontMono-Regular'; }
+  fi
+  if ! have_font; then
+    echo
+    echo "Installing Hack Nerd Font"
+    omp="$(command -v oh-my-posh || echo "$HOME/.local/bin/oh-my-posh")"
+    "$omp" font install Hack --plain
+    if command -v fc-cache >/dev/null 2>&1; then fc-cache -f; fi
+  fi
 fi
 
 # Install Pi (macOS and Linux); leave existing installations alone.
