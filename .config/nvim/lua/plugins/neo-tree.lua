@@ -19,7 +19,13 @@ return {
           return
         end
         if vim.bo.filetype == 'ministarter' then
-          require('neo-tree.command').execute { action = 'focus', source = 'filesystem' }
+          -- follow_current_file otherwise implicitly reveals the starter's virtual URI.
+          require('neo-tree.command').execute {
+            action = 'focus',
+            source = 'filesystem',
+            reveal = false,
+            dir = vim.fn.getcwd(),
+          }
           return
         end
         vim.cmd 'Neotree reveal'
