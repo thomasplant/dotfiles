@@ -1,0 +1,122 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "upgrade": {
+    "source": "cdn",
+    "interval": "168h",
+    "auto": false,
+    "notice": false
+  },
+  "console_title_template": "{{ .Shell }} in {{ .Folder }}",
+  "palette": {
+    "fg": "#ebdbb2",
+    "red": "#fb4934",
+    "green": "#b8bb26",
+    "yellow": "#fabd2f",
+    "blue": "#83a598",
+    "purple": "#d3869b",
+    "aqua": "#8ec07c",
+    "orange": "#fe8019",
+    "muted": "#928374"
+  },
+  "palettes": {
+    "template": "{{ if eq .Env.OMP_MODE \"light\" }}gruvbox-light{{ else }}gruvbox-dark{{ end }}",
+    "list": {
+      "gruvbox-dark": {
+        "fg": "#ebdbb2",
+        "red": "#fb4934",
+        "green": "#b8bb26",
+        "yellow": "#fabd2f",
+        "blue": "#83a598",
+        "purple": "#d3869b",
+        "aqua": "#8ec07c",
+        "orange": "#fe8019",
+        "muted": "#928374"
+      },
+      "gruvbox-light": {
+        "fg": "#3c3836",
+        "red": "#9d0006",
+        "green": "#79740e",
+        "yellow": "#b57614",
+        "blue": "#076678",
+        "purple": "#8f3f71",
+        "aqua": "#427b58",
+        "orange": "#af3a03",
+        "muted": "#7c6f64"
+      }
+    }
+  },
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "template": "⠀",
+          "foreground": "p:muted",
+          "background": "transparent"
+        },
+        {
+          "type": "path",
+          "style": "plain",
+          "options": {
+            "style": "folder"
+          },
+          "template": "{{ .Path }}",
+          "foreground": "p:blue",
+          "background": "transparent"
+        },
+        {
+          "type": "git",
+          "style": "plain",
+          "options": {
+            "branch_template": "{{ trunc 25 .Branch }}",
+            "fetch_status": true
+          },
+          "template": " {{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if or (.Working.Changed) (.Staging.Changed) }} ✘{{ else }} ✔{{ end }}",
+          "foreground": "p:green",
+          "background": "transparent",
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:red{{ end }}",
+            "{{ if or (gt .Ahead 0) (gt .Behind 0) }}p:aqua{{ end }}"
+          ]
+        },
+        {
+          "type": "root",
+          "style": "plain",
+          "template": " ",
+          "foreground": "p:red",
+          "background": "transparent"
+        },
+        {
+          "type": "executiontime",
+          "style": "plain",
+          "options": {
+            "threshold": 500,
+            "style": "round"
+          },
+          "template": " {{ .FormattedMs }}",
+          "foreground": "p:muted",
+          "background": "transparent"
+        },
+        {
+          "type": "status",
+          "style": "plain",
+          "options": {
+            "always_enabled": true
+          },
+          "template": " ᐅ ",
+          "foreground": "p:green",
+          "background": "transparent",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}p:red{{ end }}"
+          ]
+        }
+      ]
+    }
+  ],
+  "version": 4,
+  "final_space": false
+}

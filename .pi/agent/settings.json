@@ -1,0 +1,45 @@
+{
+  "lastChangelogVersion": "1.1.0",
+  "theme": "gruvbox-light/gruvbox-dark",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-4-8",
+  "defaultThinkingLevel": "medium",
+  "showCacheMissNotices": true,
+  "subagents": {
+    "agentOverrides": {
+      "worker": {
+        "thinking": "low"
+      }
+    },
+    "agentOverridesByProvider": {
+      "anthropic": {
+        "worker": {
+          "thinking": "medium"
+        }
+      }
+    }
+  },
+  "packages": [
+    "npm:@gotgenes/pi-anthropic-auth@3.4.2",
+    "npm:pi-web-access@0.37.0",
+    "npm:@tmustier/pi-usage-extension@0.9.5",
+    "npm:pi-subagents@0.76.1",
+    "npm:pi-lens@4.4.0",
+    "npm:@narumitw/pi-btw@0.61.1",
+    "npm:pi-patty-bg-tasks@1.1.6",
+    "npm:@gotgenes/pi-permission-system@40.0.2",
+    "npm:@quintinshaw/pi-dynamic-workflows@3.14.0"
+  ],
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "enabledModels": [
+    "openai-codex/gpt-6.1-sol",
+    "anthropic/claude-opus-5-5",
+    "openai-codex/gpt-6-astra",
+    "anthropic/claude-sonnet-5-5",
+    "anthropic/claude-haiku-4-5"
+  ],
+  "tuiMode": "regular",
+  "deviceId": "35627d3b-21c0-4345-acb5-bf2a68898031"
+}

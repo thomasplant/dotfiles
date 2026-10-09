@@ -1,0 +1,11 @@
+[user]
+	email = thomas.george.plant@gmail.com
+	name = Thomas Plant
+
+# Picked by $DELTA_FEATURES (+light-mode / +dark-mode), set from the shell rc.
+[delta "light-mode"]
+	light = true
+	syntax-theme = gruvbox-light
+[delta "dark-mode"]
+	dark = true
+	syntax-theme = gruvbox-dark

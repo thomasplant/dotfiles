@@ -1,0 +1,25 @@
+# Per-machine overrides, sourced by .zshrc but never tracked.
+.zshrc.local
+.gitconfig.local
+
+# Never commit credentials or state.
+*.log
+*_history
+.cache/
+
+.config/lazygit/state.yml
+
+# Neovim dependencies and generated local files.
+.config/nvim/node_modules/
+.config/nvim/spell/
+.config/nvim/.luarc.json
+
+# macOS
+.DS_Store
+
+# Third-party code installed by tools, not authored here.
+# (TPM clones plugins here; oh-my-zsh itself is a cloned framework - only
+# your own $ZSH_CUSTOM files belong in this repo.)
+.config/tmux/plugins/
+.tmux/plugins/
+.oh-my-zsh/

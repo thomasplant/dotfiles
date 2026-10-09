@@ -1,0 +1,24 @@
+# Files stow must NOT link into $HOME. This file REPLACES stow's built-in ignore
+# list, so the defaults we still want (.git, README) are repeated here.
+# Perl regexes; a leading ^/ anchors to the repo root.
+\.git
+\.gitignore
+\.gitattributes
+\.DS_Store
+^/README.*
+^/LICENSE.*
+^/install\.sh
+^/bootstrap\.sh
+^/bootstrap\.ps1
+^/windows
+^/install\.ps1
+^/\.stow-local-ignore
+# Pi uses an explicit whole-folder link in install.sh.
+^/\.pi
+
+# Neovim license, formatter settings and local dependencies are not runtime config.
+^/\.config/nvim/LICENSE.*
+^/\.config/nvim/\.stylua\.toml
+^/\.config/nvim/node_modules
+^/\.config/nvim/spell
+^/\.config/nvim/\.luarc\.json

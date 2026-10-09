@@ -1,0 +1,9 @@
+{
+  "tui.editor.cursorLeft": ["left"],
+  "tui.editor.deleteWordBackward": ["alt+backspace"],
+  "app.model.select": ["ctrl+p"],
+  "app.model.cycleForward": ["ctrl+l"],
+  "app.model.cycleBackward": ["ctrl+h"],
+  "app.thinking.cycle": ["ctrl+t"],
+  "app.thinking.toggle": ["ctrl+alt+t"]
+}

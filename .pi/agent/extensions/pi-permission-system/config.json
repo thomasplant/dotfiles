@@ -1,0 +1,96 @@
+{
+  "$schema": "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json",
+  "debugLog": false,
+  "permissionReviewLog": true,
+  "yoloMode": false,
+  "doublePressToConfirm": true,
+  "shellTools": {
+    "bash_bg": {
+      "commandArgument": "command"
+    },
+    "monitor": {
+      "commandArgument": "command"
+    }
+  },
+  "permission": {
+    "*": "allow",
+    "path": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow",
+      "*.pem": "deny",
+      "*.key": "deny",
+      "*.p12": "deny",
+      "*.pfx": "deny",
+      "*/.ssh/*": "deny",
+      "*/auth.json": "deny",
+      "~/.pi/agent/mcp-auth.json": "deny",
+      "*/.pi/agent/mcp-auth.json": "deny",
+      "*/.pi/agent/mcp-onboarding.json": "ask",
+      "*/.pi/agent/extensions/pi-permission-system/logs/*": "ask",
+      "*/.pi/agent/sessions/*": "ask",
+      "~/.pi/agent/mcp-onboarding.json": "ask",
+      "~/.pi/agent/extensions/pi-permission-system/logs/*": "ask",
+      "~/.pi/agent/sessions/*": "ask",
+      "*/mcp-oauth/*": "deny",
+      "*/.aws/*": "deny",
+      "*/.azure/*": "deny",
+      "*/.config/gcloud/*": "deny",
+      "*/.kube/config": "deny",
+      "*/.npmrc": "deny",
+      "*/.git-credentials": "deny",
+      "*/.netrc": "deny",
+      "*/.docker/config.json": "deny",
+      "id_rsa": "deny",
+      "id_ed25519": "deny"
+    },
+    "path_write": {
+      "~/.pi/agent/extensions/pi-permission-system/config.json": "ask",
+      "~/.pi/agent/settings.json": "ask",
+      "*/.pi/agent/extensions/pi-permission-system/config.json": "ask",
+      "*/.pi/agent/settings.json": "ask"
+    },
+    "external_directory": {
+      "*": "ask",
+      "c:/development/*": "allow",
+      "/tmp/*": "allow",
+      "~/AppData/Local/Temp/*": "allow"
+    },
+    "external_directory_read": {
+      "~/.pi/agent": "allow",
+      "~/.pi/agent/*": "allow",
+      "*/Temp/pi-mcp-output-*": "allow",
+      "*/Temp/pi-mcp-*": "allow",
+      "*/pi-mcp-output-*": "allow"
+    },
+    "bash": {
+      "*": "allow",
+      "rm *": "ask",
+      "rm -rf .vitest": "allow",
+      "git reset --hard*": "ask",
+      "git clean *": "ask",
+      "git checkout -- *": "ask",
+      "git restore *": "ask",
+      "git branch -D *": "ask",
+      "git push *": "ask",
+      "npm publish*": "ask",
+      "npx *": "ask",
+      "npx vitest run *": "allow",
+      "npx tsc *": "allow",
+      "npm exec *": "ask",
+      "pnpm dlx *": "ask",
+      "yarn dlx *": "ask",
+      "pip install *": "ask",
+      "pip3 install *": "ask",
+      "sh *": "ask",
+      "bash *": "ask",
+      "powershell *": "ask",
+      "powershell.exe *": "ask",
+      "pwsh *": "ask",
+      "pwsh.exe *": "ask"
+    },
+    "powershell": "ask",
+    "agent_bg": "ask"
+  }
+}
