@@ -1,11 +1,10 @@
 gui:
-  wrapLinesInStagingView: false
-
+  wrapLinesInDiffView: false
 git:
-  pagers:
+  diffRenderers:
     - name: delta-inline
       # Detection can't work here: lazygit owns stdin, so delta's OSC-11 query for the
       # terminal background never gets an answer and it silently falls back to dark.
       # Light/dark comes from $DELTA_FEATURES instead (set in the shell rc).
-      pager: delta --detect-dark-light=never --paging=never --line-numbers --wrap-max-lines=0
-    - {}
+      command: delta --detect-dark-light=never --paging=never --line-numbers --wrap-max-lines=0
+    - type: rawGit

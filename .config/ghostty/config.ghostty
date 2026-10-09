@@ -1,0 +1,22 @@
+# Ghostty (macOS / Linux). Reload: Cmd+Shift+,   Full reference: ghostty +show-config --default --docs
+
+# gruvbox (morhetz), following the OS light/dark setting like the oh-my-posh prompt.
+theme = light:Gruvbox Light,dark:Gruvbox Dark
+
+font-family = Hack Nerd Font Mono
+font-size = 12
+
+background-opacity = 0.95
+background-blur = 8
+
+# No title bar or close/minimise buttons 
+macos-titlebar-style = hidden
+window-padding-x = 6
+window-padding-y = 4
+
+#Mac OS settings
+quit-after-last-window-closed = true
+macos-option-as-alt = left
+
+# zsh vi mode sets the cursor shape itself (block = command, beam = insert).
+shell-integration-features = no-cursor

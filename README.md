@@ -11,10 +11,14 @@ The repo mirrors `$HOME`, so on Mac/Linux the path *is* the configuration:
 .config/ripgrep/ripgreprc       shared
 .config/lazygit/config.yml      shared
 .config/git/config              shared
+.config/oh-my-posh/             shared prompt theme (zsh + PowerShell)
+.config/ghostty/config.ghostty  terminal (macOS / Linux): gruvbox light + dark
+.zshenv                         zsh: XDG paths, ZDOTDIR=~/.config/zsh
+.config/zsh/.zshrc              zsh (Mac / Linux / WSL)
 .config/nvim/                   shared Neovim config (including lazy-lock.json)
 .pi/agent/                      shared Pi config (whole-folder link)
 .pi/.gitignore                  Pi-specific tracked-file allowlist
-windows/                        Windows only (PowerShell profile, oh-my-posh theme)
+windows/                        Windows only (PowerShell profile)
 
 bootstrap.sh          install packages (brew / pacman / dnf / apt)
 bootstrap.ps1         install Windows tools, build tools, modules and npm dependencies
@@ -23,7 +27,8 @@ install.ps1           symlinks via PowerShell (Windows)
 .stow-local-ignore    what stow must not link
 ```
 
-Shell (`.zshrc`, `.zshenv`) and tmux config are still to be imported from the Mac.
+Machine-specific zsh settings go in `~/.config/zsh/.zshrc.local` (untracked).
+zsh history lives in `~/.local/state/zsh/history`. tmux config is still to be imported.
 
 ## Install
 
@@ -61,7 +66,7 @@ it does not delete them or merge their contents into the repo.
 | `.config/lazygit/config.yml` | `%LOCALAPPDATA%\lazygit\config.yml` |
 | `.config/nvim/` | `%LOCALAPPDATA%\nvim` (directory symlink) |
 | `.pi/agent/` | `~\.pi\agent` (directory symlink) |
-| `windows/gruvbox-lean.omp.json` | `~\.config\oh-my-posh\gruvbox-lean.omp.json` |
+| `.config/oh-my-posh/gruvbox-lean.omp.json` | `~\.config\oh-my-posh\gruvbox-lean.omp.json` |
 | `windows/Microsoft.PowerShell_profile.ps1` | `$PROFILE` |
 
 ## NVIM
@@ -90,8 +95,10 @@ and restart Pi. It is not applied automatically or required on Mac/Linux.
 
 - **One repo, a `windows/` folder** rather than a second repo, so shared configs
   can't drift. Delete the folder once Windows is gone.
-- **oh-my-posh is Windows-only.** It only drives the PowerShell prompt; the zsh
-  side will use whatever comes over from the Mac.
+- **One oh-my-posh theme for every shell.** `gruvbox-lean` drives both the
+  PowerShell and zsh prompts; `OMP_MODE` picks the light or dark palette.
+- **zsh without a framework.** No oh-my-zsh: autosuggestions, syntax
+  highlighting, zoxide and fzf come from the package manager (`bootstrap.sh`).
 - **Machine-specific git settings stay out of the repo.** Windows'
   `core.sshCommand` lives in `~/.gitconfig`, which git reads after
   `~/.config/git/config`.
@@ -106,12 +113,17 @@ and restart Pi. It is not applied automatically or required on Mac/Linux.
 ## macOS notes
 
 - lazygit ignores `~/.config` on macOS unless `XDG_CONFIG_HOME="$HOME/.config"`
-  is set (put it in `.zshenv`).
+  is set (`.zshenv` sets it).
 - An existing `~/.gitconfig` overrides `~/.config/git/config` for shared keys.
-- ripgrep only reads its config through `RIPGREP_CONFIG_PATH`.
+- ripgrep only reads its config through `RIPGREP_CONFIG_PATH` (`.zshenv` sets it).
+- Terminal programs (lazygit, ls, fzf, zsh plugins) use the terminal's ANSI
+  palette, so gruvbox comes from Ghostty's theme. On Windows/WSL the equivalent
+  is the Windows Terminal colour scheme.
+- Ghostty also reads `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`
+  *after* the XDG file; keep that file absent so settings stay in the repo.
 
 ## Still outstanding
-- Import `.zshrc` / `.zshenv` / tmux config from the Mac.
+- Import tmux config from the Mac.
 
 ## Not tested
 - bootstrap.ps1

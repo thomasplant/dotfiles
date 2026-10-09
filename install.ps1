@@ -24,7 +24,7 @@ $links = [ordered]@{
     '.config\lazygit\config.yml'             = Join-Path $env:LOCALAPPDATA 'lazygit\config.yml'
     '.config\nvim'                           = Join-Path $env:LOCALAPPDATA 'nvim'
     '.pi\agent'                              = Join-Path $HOME '.pi\agent'
-    'windows\gruvbox-lean.omp.json'          = Join-Path $HOME '.config\oh-my-posh\gruvbox-lean.omp.json'
+    '.config\oh-my-posh\gruvbox-lean.omp.json' = Join-Path $HOME '.config\oh-my-posh\gruvbox-lean.omp.json'
     'windows\Microsoft.PowerShell_profile.ps1' = $PROFILE.CurrentUserCurrentHost
 }
 
