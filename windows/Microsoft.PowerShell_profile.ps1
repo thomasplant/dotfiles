@@ -1,4 +1,12 @@
 
+# mise shims (nvim, rg, node, pi, ...) go first so they win over older copies in the
+# machine PATH, which Windows always places ahead of the user PATH. Shims are real
+# .exe files, so this costs nothing at startup (no `mise activate` hook).
+$miseShims = Join-Path $env:LOCALAPPDATA 'mise\shims'
+if ((Test-Path -LiteralPath $miseShims) -and ($miseShims -notin ($env:Path -split ';'))) {
+    $env:Path = "$miseShims;$env:Path"
+}
+
 Set-Alias lvim 'C:\Users\Thomas Plant\.local\bin\lvim.ps1'
 $teamExplorerPath = 'C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer'
 if ($teamExplorerPath -notin ($env:Path -split ';')) { $env:Path += ";$teamExplorerPath" }

@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 # Install the toolchain these dotfiles assume, on macOS (Homebrew), Arch (pacman),
-# Fedora (dnf) or Debian/Ubuntu (apt, i.e. WSL). zsh uses no framework: its plugins
-# (autosuggestions, syntax highlighting, zoxide) come from the package manager.
+# Fedora (dnf) or Debian/Ubuntu (apt, i.e. WSL).
+#
+# Two layers:
+#   1. System packages: git, zsh + plugins, stow, tmux, compilers, Ghostty.
+#   2. mise (https://mise.jdx.dev): the shared CLI toolchain listed in
+#      .config/mise/config.toml - neovim, ripgrep, fzf, lazygit, delta, fd, bat,
+#      zoxide, oh-my-posh, node, markdownlint-cli2 and Pi. Same versions on every OS.
 set -euo pipefail
+
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# --- 1. System packages ------------------------------------------------------
 
 if [[ "$(uname -s)" == "Darwin" ]]; then
   if ! command -v brew >/dev/null 2>&1; then
@@ -15,73 +24,58 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     echo "Once installation finishes, rerun ./bootstrap.sh." >&2
     exit 1
   fi
-  brew install git stow neovim ripgrep fzf lazygit git-delta fd bat tmux \
-    oh-my-posh zoxide zsh-autosuggestions zsh-syntax-highlighting markdownlint-cli2
+  brew install git stow tmux mise zsh-autosuggestions zsh-syntax-highlighting
   brew install --cask ghostty
 
 elif command -v pacman >/dev/null 2>&1; then
   sudo pacman -S --needed --noconfirm \
-    zsh git stow neovim ripgrep fzf lazygit git-delta fd bat tmux curl unzip base-devel \
-    zoxide zsh-autosuggestions zsh-syntax-highlighting
+    zsh git stow tmux curl unzip base-devel mise \
+    zsh-autosuggestions zsh-syntax-highlighting
 
 elif command -v dnf >/dev/null 2>&1; then
   sudo dnf install -y \
-    zsh git stow neovim ripgrep fzf git-delta fd-find bat tmux curl unzip gcc make \
-    zoxide zsh-autosuggestions zsh-syntax-highlighting
-
-  # lazygit needs a third-party repository; don't enable one automatically.
-  echo
-  echo "NOTE: install lazygit separately, using its release tarball or COPR:"
-  echo "  sudo dnf copr enable dejan/lazygit"
-  echo "  sudo dnf install lazygit"
+    zsh git stow tmux curl unzip gcc make \
+    zsh-autosuggestions zsh-syntax-highlighting
 
 elif command -v apt >/dev/null 2>&1; then
   sudo apt update
-  sudo apt install -y zsh git stow ripgrep fzf tmux curl unzip bat fd-find build-essential \
-    zoxide zsh-autosuggestions zsh-syntax-highlighting
-
-  # Debian/Ubuntu repos lag badly on these - install them properly instead.
-  echo
-  echo "NOTE: apt's neovim/lazygit/delta are usually too old."
-  echo "  neovim    : official AppImage or the unstable PPA"
-  echo "  lazygit   : release tarball from github.com/jesseduffield/lazygit"
-  echo "  delta     : .deb from github.com/dandavison/delta/releases"
-  # Ubuntu ships fd as fdfind and bat as batcat; give them their real names.
-  mkdir -p "$HOME/.local/bin"
-  if [[ -x /usr/bin/fdfind ]]; then ln -sf /usr/bin/fdfind "$HOME/.local/bin/fd"; fi
-  if [[ -x /usr/bin/batcat ]]; then ln -sf /usr/bin/batcat "$HOME/.local/bin/bat"; fi
+  sudo apt install -y zsh git stow tmux curl unzip build-essential \
+    zsh-autosuggestions zsh-syntax-highlighting
 
 else
-  echo "Unsupported platform. Install manually: git stow neovim ripgrep fzf lazygit delta tmux zoxide oh-my-posh zsh-autosuggestions zsh-syntax-highlighting make and a C compiler" >&2
+  echo "Unsupported platform. Install manually: git zsh stow tmux zsh-autosuggestions zsh-syntax-highlighting make, a C compiler and mise" >&2
   exit 1
 fi
 
-# nvim lints Markdown with markdownlint-cli2 (lua/plugins/lint.lua). Linux repos don't
-# package it, so use npm when available (macOS: brew above).
-if [[ "$(uname -s)" == "Linux" ]] && ! command -v markdownlint-cli2 >/dev/null 2>&1; then
-  echo
-  if command -v npm >/dev/null 2>&1; then
-    echo "Installing markdownlint-cli2 with npm"
-    npm install --global markdownlint-cli2 \
-      || echo "NOTE: npm install failed; try: sudo npm install --global markdownlint-cli2"
-  else
-    echo "NOTE: install Node.js, then: npm install --global markdownlint-cli2"
-  fi
-fi
+# --- 2. mise toolchain -------------------------------------------------------
 
-# oh-my-posh isn't in the Linux distro repos; use its official installer (macOS: brew above).
-if [[ "$(uname -s)" == "Linux" ]] && ! command -v oh-my-posh >/dev/null 2>&1; then
+# Homebrew and pacman install mise above; elsewhere use the official installer,
+# which puts a single binary in ~/.local/bin and does not edit shell rc files.
+if ! command -v mise >/dev/null 2>&1 && [[ ! -x "$HOME/.local/bin/mise" ]]; then
   echo
-  echo "Installing oh-my-posh into ~/.local/bin"
-  mkdir -p "$HOME/.local/bin"
+  echo "Installing mise into ~/.local/bin"
   (
     installer="$(mktemp)"
     trap 'rm -f "$installer"' EXIT
-    curl -fsSL https://ohmyposh.dev/install.sh -o "$installer"
-    bash "$installer" -d "$HOME/.local/bin"
+    curl -fsSL https://mise.run -o "$installer"
+    sh "$installer"
   )
 fi
+export PATH="$HOME/.local/bin:$PATH"
 
+# install.sh links the config into ~/.config/mise later; read it from the repo
+# now so this script can run first. Missing tools are installed, existing kept.
+echo
+echo "Installing the mise toolchain (.config/mise/config.toml)"
+export MISE_GLOBAL_CONFIG_FILE="$DOTFILES/.config/mise/config.toml"
+mise install
+
+# Neovim's local npm dependencies (Tree-sitter CLI), using mise's node.
+echo
+echo "Installing Neovim npm dependencies (.config/nvim/package-lock.json)"
+mise exec -- npm ci --prefix "$DOTFILES/.config/nvim"
+
+# Hack Nerd Font, via the mise-installed oh-my-posh. WSL uses the Windows font.
 if [[ -n "${WSL_DISTRO_NAME:-}" ]] || grep -qi microsoft /proc/version 2>/dev/null; then
   echo
   echo "WSL: install Hack Nerd Font on Windows (bootstrap.ps1), not here."
@@ -94,31 +88,15 @@ else
   if ! have_font; then
     echo
     echo "Installing Hack Nerd Font"
-    omp="$(command -v oh-my-posh || echo "$HOME/.local/bin/oh-my-posh")"
-    "$omp" font install Hack --plain
+    mise exec -- oh-my-posh font install Hack --plain
     if command -v fc-cache >/dev/null 2>&1; then fc-cache -f; fi
   fi
 fi
-
-# Install Pi (macOS and Linux); leave existing installations alone.
-if command -v pi >/dev/null 2>&1; then
-  echo
-  echo "Pi already installed: $(command -v pi)"
-else
-  echo
-  echo "Installing Pi using the official installer (may offer to install Node.js/npm)."
-  echo "Decline 'Start pi now' until you have run ./install.sh."
-  (
-    installer="$(mktemp)"
-    trap 'rm -f "$installer"' EXIT
-    curl -fsSL https://pi.dev/install.sh -o "$installer"
-    # Keep the managed install in the repo, ready for the later agent symlink.
-    PI_CODING_AGENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.pi/agent" sh "$installer"
-  )
-fi
+unset MISE_GLOBAL_CONFIG_FILE
 
 echo
-echo "Next: ./install.sh"
+echo "Next: ./install.sh, then open a new zsh (it runs 'mise activate')."
 if [[ "$(basename "${SHELL:-}")" != "zsh" ]]; then
   echo "Then make zsh your login shell:  chsh -s \$(command -v zsh)"
 fi
+echo "Update tools later with: mise upgrade"

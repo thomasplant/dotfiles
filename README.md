@@ -17,12 +17,13 @@ The repo mirrors `$HOME`, so on Mac/Linux the path *is* the configuration:
 .zshenv                         zsh: XDG paths, ZDOTDIR=~/.config/zsh
 .config/zsh/.zshrc              zsh (Mac / Linux / WSL)
 .config/nvim/                   shared Neovim config (including lazy-lock.json)
+.config/mise/config.toml        shared CLI toolchain (installed by mise)
 .pi/agent/                      shared Pi config (whole-folder link)
 .pi/.gitignore                  Pi-specific tracked-file allowlist
 windows/                        Windows only (PowerShell profile)
 
-bootstrap.sh          install packages (brew / pacman / dnf / apt)
-bootstrap.ps1         install Windows tools, build tools, modules and npm dependencies
+bootstrap.sh          system packages (brew / pacman / dnf / apt), then mise install
+bootstrap.ps1         WinGet tools, build tools, modules, mise install, npm dependencies
 install.sh            symlinks via stow (Mac / Linux)
 install.ps1           symlinks via PowerShell (Windows)
 .stow-local-ignore    what stow must not link
@@ -65,10 +66,31 @@ it does not delete them or merge their contents into the repo.
 | `.config/git/config` | `~\.config\git\config` |
 | `.config/ripgrep/ripgreprc` | `~\.ripgreprc` (where `RIPGREP_CONFIG_PATH` points) |
 | `.config/lazygit/config.yml` | `%LOCALAPPDATA%\lazygit\config.yml` |
+| `.config/mise/config.toml` | `~\.config\mise\config.toml` |
 | `.config/nvim/` | `%LOCALAPPDATA%\nvim` (directory symlink) |
 | `.pi/agent/` | `~\.pi\agent` (directory symlink) |
 | `.config/oh-my-posh/gruvbox-lean.omp.json` | `~\.config\oh-my-posh\gruvbox-lean.omp.json` |
 | `windows/Microsoft.PowerShell_profile.ps1` | `$PROFILE` |
+
+## Tools (mise)
+
+[mise](https://mise.jdx.dev) installs the CLI tools that are the same on every
+OS - neovim, ripgrep, fzf, lazygit, delta, fd, bat, zoxide, oh-my-posh, node,
+markdownlint-cli2 and Pi - from [.config/mise/config.toml](.config/mise/config.toml).
+The system package manager keeps what is OS-specific: git, zsh and its plugins,
+stow, tmux, compilers, Ghostty, PowerShell modules and 7-Zip. The bootstraps
+then install Hack Nerd Font with `oh-my-posh font install` (on Windows for WSL).
+
+- Node and Neovim are pinned to a release line; the rest track `latest`.
+  `mise upgrade` updates them; `mise outdated` previews.
+- zsh runs `mise activate zsh`. Windows uses mise's shims
+  (`%LOCALAPPDATA%\mise\shims`, real `.exe` files): `bootstrap.ps1` adds them to
+  the user PATH and the PowerShell profile prepends them, because Windows puts
+  the machine PATH (older WinGet/Chocolatey installs) first.
+- `bootstrap.ps1` lists older copies of these tools that it finds on PATH; they
+  are not uninstalled automatically.
+- Many tools download from GitHub releases. If you hit API rate limits, set
+  `GITHUB_TOKEN` before running the bootstrap.
 
 ## NVIM
 
@@ -125,7 +147,6 @@ and restart Pi. It is not applied automatically or required on Mac/Linux.
 
 - Decide if Yabai and SKHD should be added
 - Windows Terminal Settings Added
-- Look into migrating to Mise for Node and potentially rest of bootstrap.
 
 ## Not tested
 

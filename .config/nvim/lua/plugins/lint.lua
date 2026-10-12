@@ -6,7 +6,7 @@ return {
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
-        markdown = { 'markdownlint-cli2' }, -- installed by bootstrap.sh / bootstrap.ps1
+        markdown = { 'markdownlint-cli2' }, -- installed by mise
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,

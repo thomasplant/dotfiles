@@ -1,5 +1,5 @@
 # Interactive zsh config, shared by macOS and Linux/WSL2.
-# Plugins come from the system package manager (see bootstrap.sh); no framework.
+# Plugins come from the system package manager, CLI tools from mise (see bootstrap.sh).
 # Machine-specific additions go in $ZDOTDIR/.zshrc.local (not tracked).
 
 # --- Environment -------------------------------------------------------------
@@ -13,6 +13,10 @@ fi
 
 typeset -U path fpath  # no duplicate entries
 path=("$HOME/bin" "$HOME/.local/bin" $path)
+
+# mise: shared CLI toolchain from ~/.config/mise/config.toml (see bootstrap.sh).
+# Must run before the Tools section, which initialises fzf, zoxide and oh-my-posh.
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
 
 export EDITOR=nvim VISUAL=nvim
 export MANPAGER='nvim +Man!'
@@ -121,11 +125,6 @@ alias g='lazygit' lg='lazygit'
 alias gst='git status'
 alias oc='opencode'
 
-# zoxide
-if command -v zoxide &> /dev/null; then
-    eval "$(zoxide init --cmd cd zsh)"
-fi
-
 # --- Tools -------------------------------------------------------------------
 
 # fzf: Ctrl+T files, Ctrl+R history, Alt+C cd. `fzf --zsh` needs fzf >= 0.48;
@@ -144,7 +143,8 @@ if (( $+commands[fzf] )); then
                                  FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
 fi
 
-(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"   # z <dir>, zi for a picker
+# zoxide replaces cd: `cd <partial>` jumps to a frecent match, `cdi` opens a picker.
+(( $+commands[zoxide] )) && eval "$(zoxide init --cmd cd zsh)"
 
 # --- Long-command bell (tmux) ------------------------------------------------
 # When a command runs for ZSH_BELL_AFTER seconds or more, ring the bell as it

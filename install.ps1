@@ -22,6 +22,7 @@ $links = [ordered]@{
     '.config\git\config'                     = Join-Path $HOME '.config\git\config'
     '.config\ripgrep\ripgreprc'              = Join-Path $HOME '.ripgreprc'   # RIPGREP_CONFIG_PATH already points here
     '.config\lazygit\config.yml'             = Join-Path $env:LOCALAPPDATA 'lazygit\config.yml'
+    '.config\mise\config.toml'               = Join-Path $HOME '.config\mise\config.toml'
     '.config\nvim'                           = Join-Path $env:LOCALAPPDATA 'nvim'
     '.pi\agent'                              = Join-Path $HOME '.pi\agent'
     '.config\oh-my-posh\gruvbox-lean.omp.json' = Join-Path $HOME '.config\oh-my-posh\gruvbox-lean.omp.json'

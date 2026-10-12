@@ -1,0 +1,20 @@
+# Global toolchain for macOS, Linux/WSL and Windows, installed by `mise install`
+# (bootstrap.sh / bootstrap.ps1 run it). OS-specific packages - git, zsh, stow,
+# tmux, compilers, fonts, PowerShell modules - stay with the system package manager.
+#
+# Node and Neovim are pinned to a major/minor line; everything else tracks the
+# latest release. `mise upgrade` updates within these constraints.
+
+[tools]
+node = "24"                 # Pi needs Node 22.19+
+neovim = "0.12"             # config requires 0.12+
+ripgrep = "latest"
+fzf = "latest"
+lazygit = "latest"
+delta = "latest"
+fd = "latest"
+bat = "latest"
+zoxide = "latest"
+oh-my-posh = "latest"
+markdownlint-cli2 = "latest"   # nvim-lint's markdownlint-cli2 linter
+"npm:@earendil-works/pi-coding-agent" = "latest"
