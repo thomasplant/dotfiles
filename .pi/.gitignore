@@ -36,6 +36,10 @@
 !/agent/themes/gruvbox-light.json
 
 !/agent/patches/
+
+!/agent/npm/
+/agent/npm/*
+!/agent/npm/.npmrc
 !/agent/review-lite/
 /agent/review-lite/*
 !/agent/review-lite/README.md

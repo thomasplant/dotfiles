@@ -76,9 +76,9 @@ it does not delete them or merge their contents into the repo.
 
 [mise](https://mise.jdx.dev) installs the CLI tools that are the same on every
 OS - neovim, ripgrep, fzf, lazygit, delta, fd, bat, zoxide, oh-my-posh, node,
-markdownlint-cli2 and Pi - from [.config/mise/config.toml](.config/mise/config.toml).
+markdownlint-cli2, Pi, and tmux on macOS and Linux, - from [.config/mise/config.toml](.config/mise/config.toml).
 The system package manager keeps what is OS-specific: git, zsh and its plugins,
-stow, tmux, compilers, Ghostty, PowerShell modules and 7-Zip. The bootstraps
+stow, compilers, Ghostty, PowerShell modules and 7-Zip. The bootstraps
 then install Hack Nerd Font with `oh-my-posh font install` (on Windows for WSL).
 
 - Node and Neovim are pinned to a release line; the rest track `latest`.

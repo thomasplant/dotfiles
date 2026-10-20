@@ -20,15 +20,15 @@
     }
   },
   "packages": [
-    "npm:@gotgenes/pi-anthropic-auth@3.4.2",
-    "npm:pi-web-access@0.37.0",
-    "npm:@tmustier/pi-usage-extension@0.9.5",
-    "npm:pi-subagents@0.76.1",
-    "npm:pi-lens@4.4.0",
-    "npm:@narumitw/pi-btw@0.61.1",
-    "npm:pi-patty-bg-tasks@1.1.6",
-    "npm:@gotgenes/pi-permission-system@40.0.2",
-    "npm:@quintinshaw/pi-dynamic-workflows@3.14.0"
+    "npm:@gotgenes/pi-anthropic-auth",
+    "npm:pi-web-access",
+    "npm:@tmustier/pi-usage-extension",
+    "npm:pi-subagents",
+    "npm:pi-lens",
+    "npm:@narumitw/pi-btw",
+    "npm:pi-patty-bg-tasks",
+    "npm:@gotgenes/pi-permission-system",
+    "npm:@quintinshaw/pi-dynamic-workflows"
   ],
   "terminal": {
     "showTerminalProgress": true

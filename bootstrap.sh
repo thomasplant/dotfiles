@@ -3,10 +3,11 @@
 # Fedora (dnf) or Debian/Ubuntu (apt, i.e. WSL).
 #
 # Two layers:
-#   1. System packages: git, zsh + plugins, stow, tmux, compilers, Ghostty.
+#   1. System packages: git, zsh + plugins, stow, compilers, Ghostty.
 #   2. mise (https://mise.jdx.dev): the shared CLI toolchain listed in
 #      .config/mise/config.toml - neovim, ripgrep, fzf, lazygit, delta, fd, bat,
 #      zoxide, oh-my-posh, node, markdownlint-cli2 and Pi. Same versions on every OS.
+#      Also tmux on macOS/Linux
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -24,26 +25,26 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     echo "Once installation finishes, rerun ./bootstrap.sh." >&2
     exit 1
   fi
-  brew install git stow tmux mise zsh-autosuggestions zsh-syntax-highlighting
+  brew install git stow mise zsh-autosuggestions zsh-syntax-highlighting
   brew install --cask ghostty
 
 elif command -v pacman >/dev/null 2>&1; then
   sudo pacman -S --needed --noconfirm \
-    zsh git stow tmux curl unzip base-devel mise \
+    zsh git stow curl unzip base-devel mise \
     zsh-autosuggestions zsh-syntax-highlighting
 
 elif command -v dnf >/dev/null 2>&1; then
   sudo dnf install -y \
-    zsh git stow tmux curl unzip gcc make \
+    zsh git stow curl unzip gcc make \
     zsh-autosuggestions zsh-syntax-highlighting
 
 elif command -v apt >/dev/null 2>&1; then
   sudo apt update
-  sudo apt install -y zsh git stow tmux curl unzip build-essential \
+  sudo apt install -y zsh git stow curl unzip build-essential \
     zsh-autosuggestions zsh-syntax-highlighting
 
 else
-  echo "Unsupported platform. Install manually: git zsh stow tmux zsh-autosuggestions zsh-syntax-highlighting make, a C compiler and mise" >&2
+  echo "Unsupported platform. Install manually: git zsh stow zsh-autosuggestions zsh-syntax-highlighting make, a C compiler and mise" >&2
   exit 1
 fi
 

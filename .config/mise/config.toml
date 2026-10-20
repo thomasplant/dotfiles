@@ -1,6 +1,6 @@
 # Global toolchain for macOS, Linux/WSL and Windows, installed by `mise install`
 # (bootstrap.sh / bootstrap.ps1 run it). OS-specific packages - git, zsh, stow,
-# tmux, compilers, fonts, PowerShell modules - stay with the system package manager.
+# compilers, fonts, PowerShell modules - stay with the system package manager.
 #
 # Node and Neovim are pinned to a major/minor line; everything else tracks the
 # latest release. `mise upgrade` updates within these constraints.
@@ -18,3 +18,4 @@ zoxide = "latest"
 oh-my-posh = "latest"
 markdownlint-cli2 = "latest"   # nvim-lint's markdownlint-cli2 linter
 "npm:@earendil-works/pi-coding-agent" = "latest"
+tmux = { version = "latest", os = ["linux", "macos"] }
