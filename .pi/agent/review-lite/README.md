@@ -7,7 +7,7 @@ verify calls + 1 report call). review-lite makes **at most 3 model calls**:
 | --- | --- | --- |
 | `A-correctness` finder | `anthropic/claude-opus-5-5:medium` | always |
 | `B-cross-file` finder | `anthropic/claude-opus-5-5:medium` | always, parallel with A |
-| `verify-batch` (one batched call for all surviving candidates) | `openai-codex/gpt-6.1-sol:low` | only if ≥1 deduplicated candidate survives capping at 5 |
+| `verify-batch` (one batched call for all surviving candidates) | `openai-codex/gpt-6-astra:low` | only if ≥1 deduplicated candidate survives capping at 5 |
 
 No report-writing model call: the final markdown is rendered **deterministically
 in plain JS** from the structured, verified data — nothing is worded by a model

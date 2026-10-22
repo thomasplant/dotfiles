@@ -111,7 +111,7 @@ test("no findings from either finder -> clean status, exactly 2 agent calls, ver
 
 // ---- 3. exact model routing + call count when candidates exist --------
 
-test("exact model routing: Opus 5.5 medium finders, GPT 6.1 Sol low verifier, exactly 3 calls total", async () => {
+test("exact model routing: Opus 5.5 medium finders, GPT 6 Astra low verifier, exactly 3 calls total", async () => {
   const { result, calls } = await run(
     { diff: SAMPLE_DIFF, diffSource: "git diff HEAD" },
     {
@@ -128,7 +128,7 @@ test("exact model routing: Opus 5.5 medium finders, GPT 6.1 Sol low verifier, ex
   const byLabel = Object.fromEntries(calls.map((c) => [c.label, c]));
   assert.equal(byLabel["A-correctness"].model, "anthropic/claude-opus-5-5:medium");
   assert.equal(byLabel["B-cross-file"].model, "anthropic/claude-opus-5-5:medium");
-  assert.equal(byLabel["verify-batch"].model, "openai-codex/gpt-6.1-sol:low");
+  assert.equal(byLabel["verify-batch"].model, "openai-codex/gpt-6-astra:low");
   // Verifier must NOT receive the entire diff, only excerpts + explicit independent-check instruction.
   assert.ok(!byLabel["verify-batch"].prompt.includes(SAMPLE_DIFF));
   assert.match(byLabel["verify-batch"].prompt, /independently use your read-only file\/grep tools/);

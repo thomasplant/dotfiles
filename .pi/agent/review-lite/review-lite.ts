@@ -7,7 +7,7 @@
  *       B-cross-file   -> anthropic/claude-opus-5-5:medium
  *   - At most 1 verifier agent() call, run ONLY when >=1 deduplicated
  *     candidate survives capping at 5:
- *       verify-batch   -> openai-codex/gpt-6.1-sol:low
+ *       verify-batch   -> openai-codex/gpt-6-astra:low
  *   - 0 report-writing agent() calls. The final markdown is rendered
  *     deterministically in plain JS from confirmed structured data.
  *
@@ -15,7 +15,7 @@
  * the built-in /code-review.
  *
  * Both exact model IDs match the shared settings.json `enabledModels`:
- * `anthropic/claude-opus-5-5` and `openai-codex/gpt-6.1-sol`.
+ * `anthropic/claude-opus-5-5` and `openai-codex/gpt-6-astra`.
  * Runtime provider availability still needs verification after installation.
  * This workflow does not change any global model-tier config and does not
  * use `tier:` routing at all — both agent
@@ -71,7 +71,7 @@ export function generateReviewLiteWorkflow(): string {
 const MAX_DIFF_CHARS = ${MAX_DIFF_CHARS}
 const CANDIDATE_CAP = ${CANDIDATE_CAP}
 const FINDER_MODEL = 'anthropic/claude-opus-5-5:medium'
-const VERIFIER_MODEL = 'openai-codex/gpt-6.1-sol:low'
+const VERIFIER_MODEL = 'openai-codex/gpt-6-astra:low'
 
 const rawDiff = (args && args.diff) || ''
 const diffSource = (args && args.diffSource) || 'unspecified (pass diffSource explicitly)'

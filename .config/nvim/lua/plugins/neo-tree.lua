@@ -55,6 +55,27 @@ return {
       },
     },
     filesystem = {
+      commands = {
+        clear_filter = function(state)
+          local node = state.tree and state.tree:get_node()
+          local path = node and node:get_id()
+          local fs = require 'neo-tree.sources.filesystem'
+          local renderer = require 'neo-tree.ui.renderer'
+
+          -- Restore the unfiltered tree, but reveal the selection rather than
+          -- returning to the folders that were open before the search.
+          fs.reset_search(state, false)
+          if node and node.type == 'directory' then
+            state.force_open_folders = state.force_open_folders or {}
+            table.insert(state.force_open_folders, path)
+          end
+          fs.navigate(state, nil, path, function()
+            if path then
+              renderer.focus_node(state, path, false)
+            end
+          end)
+        end,
+      },
       follow_current_file = {
         enabled = true,
         leave_dirs_open = false,

@@ -35,7 +35,7 @@ const saved = storage.save(
     name: "review-lite",
     description:
       "Two parallel reviewers (anthropic/claude-opus-5-5:medium: correctness, cross-file impact) + one batched " +
-      "verifier (openai-codex/gpt-6.1-sol:low), max 5 deduplicated findings, deterministic report. " +
+      "verifier (openai-codex/gpt-6-astra:low), max 5 deduplicated findings, deterministic report. " +
       "args: { diff, diffSource }.",
     script: generateReviewLiteWorkflow(),
   },
