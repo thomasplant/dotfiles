@@ -1,4 +1,4 @@
-# Ghostty (macOS / Linux). Reload: Cmd+Shift+,   Full reference: ghostty +show-config --default --docs
+# Ghostty (macOS / Linux). Reload: Cmd+Shift+, (macOS) / Ctrl+Shift+, (Linux)   Full reference: ghostty +show-config --default --docs
 
 # gruvbox (morhetz), following the OS light/dark setting like the oh-my-posh prompt.
 theme = light:Gruvbox Light,dark:Gruvbox Dark
@@ -14,7 +14,11 @@ macos-titlebar-style = hidden
 window-padding-x = 6
 window-padding-y = 4
 
-#Mac OS settings
+# linux settings
+gtk-titlebar = false
+window-decoration = false
+
+# macOS settings
 quit-after-last-window-closed = true
 macos-option-as-alt = left
 
